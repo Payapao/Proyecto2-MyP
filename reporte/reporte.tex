@@ -1,0 +1,354 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+%\usepackage{forest}
+\usepackage{dirtree}
+\usepackage{fontawesome5}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{lmodern}
+\usepackage{helvet}
+\usepackage[hidelinks, breaklinks=true]{hyperref}
+\usepackage[svgnames]{xcolor}
+\usepackage[table]{xcolor}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[customcolors]{hf-tikz}
+\usepackage[most]{tcolorbox}
+\usetikzlibrary{shadows}
+\usepackage{tgheros}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{listings}
+\usepackage[spanish]{babel} 
+\usepackage{xcolor,graphicx}
+\usepackage{float}
+\graphicspath{ {./diagramas/} }
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,positioning,shadows,trees}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% colors
+\definecolor{softpurple}{RGB}{145,105,160}
+\definecolor{antiquefuchsia}{RGB}{95,60,110}
+\titleformat{\section}
+  {\color{antiquefuchsia}\normalfont\Large\bfseries}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\color{antiquefuchsia}\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\color{antiquefuchsia}\normalfont\normalsize\bfseries}
+  {\thesubsubsection}{1em}{}
+%%%%%%%%%%%%%%%%%%%%%%
+% Mis comandos
+\newcounter{recordatorioCounter}
+\newcommand{\recordatorio}{%
+  \stepcounter{recordatorioCounter}% avanza el contador
+  \textbf{\textcolor{antiquefuchsia}{Recordatorio \therecordatorioCounter : }}%
+}
+\newcommand{\pb}[1]{\textcolor{softpurple}{\textbf{#1}}}
+
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{antiquefuchsia!23},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                   
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+% Icono Carpeta
+\newcommand{\foldericon}{\faFolderOpen~}
+
+\definecolor{foldercolor}{RGB}{255, 193, 7}
+\definecolor{pdfcolor}{RGB}{220, 53, 69}
+\definecolor{readmecolor}{RGB}{40, 167, 69}
+
+\renewcommand{\foldericon}{\textcolor{foldercolor}{\faFolder}}
+\newcommand{\pdficon}{\textcolor{pdfcolor}{\faFilePdf}}
+\newcommand{\txticon}{\textcolor{txtcolor}{\faFileAlt}}
+\newcommand{\zipicon}{\textcolor{gray}{\faFileArchive}}
+
+
+
+% Set up fancy header/footer
+\pagestyle{fancy}
+\fancyhead[LO,L]{UNAM}
+\fancyhead[RO,R]{\textit{\textsc{Proyecto 1}}}   
+\fancyfoot[LO,L]{Facultad De Ciencias, 2027-I}
+\fancyfoot[CO,C]{\thepage}
+\fancyfoot[RO,R]{Modelado y Programación}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newdimen\digitwidth
+\settowidth\digitwidth{0}
+\def~{\hspace{\digitwidth}}
+
+% Cambiar color de secciones
+\titleformat{\section}
+  {\color{antiquefuchsia}\normalfont\Large\bfseries}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\color{antiquefuchsia}\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\color{antiquefuchsia}\normalfont\normalsize\bfseries}
+  {\thesubsubsection}{1em}{}
+
+% Cambiar color de ítems en listas numeradas
+\setlist[enumerate]{label=\textcolor{antiquefuchsia}{\arabic*.}, left=1.5em}
+\setlist[itemize]{label=\textcolor{antiquefuchsia}{\alph*}, left=1.5em}
+\setlist[itemize]{label=\textcolor{antiquefuchsia}{\textbullet}, left=1.5em}
+
+
+\begin{document}
+\begin{titlepage}
+\begin{center}
+
+\textsc{\huge\uppercase{Universidad Nacional Autónoma De México}}\\[0.5cm]	
+
+{\huge \uppercase{Facultad de Ciencias, 2027-I} \\[0.5cm] }
+{\huge \uppercase{Modelado y Programación} \\[0.5cm] }
+
+%%% Título
+\rule{\linewidth}{0.4pt}\\[0.7em]
+{ \color{antiquefuchsia} \textsc{\Large Proyecto 2:}} \\[0.7em] 
+ \textit{\Large Base de datos musical}
+ \\[0.1em] 
+ \rule{\linewidth}{0.4pt}\\[0.7em]
+
+{\color{antiquefuchsia} 
+\textsc{\Large Morales Galván María Paola}}\\[0.7em]
+  \textit{\Large 323073406\\[0.5em] }
+  \textit{\Large 28/09/2026}    
+ \\[0.1em] 
+\rule{\linewidth}{0.4pt}\\[2em]
+
+
+\color{black!80!black}{\large \uppercase{\textsc{ Profesor:}}}\\[0.25cm]
+
+\begin{tabular}{l}
+\large 	Canek Peláez Valdés \\[0.4cm]
+\end{tabular}
+
+\large \uppercase{Ayudante de Teoría:}\\[0.2cm]
+\centering
+\begin{tabular}{l}
+
+\large Cynthia Lizbeth Sánchez Urbano \\[0.4cm]
+\end{tabular}
+
+\large \uppercase{Ayudante de Laboratorio:}\\[0.2cm]
+\centering
+\begin{tabular}{l}
+
+\large Miriam Torres Bucio\\[0.4cm]
+\end{tabular}
+
+\vfill
+
+\end{center}
+\end{titlepage}
+
+\section*{Resumen}
+
+En este proyecto se diseñó e implementó una base de datos musical con interfaz grafica, haciendo uso del Modelo Vista Controlador.
+
+\section*{Introducción}
+
+El proyecto aborda el diseño e implementación de una base de datos musical
+
+\subsubsection*{Objetivos del Proyecto}
+
+\pb{Objetivo General:}
+\begin{itemize}
+\item Diseñar e implementar un sistema de gestión musicall integrado por una base de datos relacional, una interfaz grafica, un minero automatizado de metadatos Id3v2.4 y un motor de busqueda simplificado, garantizando el almacenamiento de datos sin modificar los archivos originales.
+\end{itemize}
+
+\pb{Objetivos Específicos:}
+\begin{itemize}
+    \item Una base de datos SQL que almacene, relacione y modifique la información de las canciones (Titulo, género, artista, álbumes).
+    \item Desarrollar un minero capaz de recorrer directorios de forma recursiva para extraer metadatos de los archivos MP3 con etiquetas Id3v2.4 de forma automatizada.
+    \item Implementar una interfaz grafica intuitiva que permita visualizar y editar la información, facilitando la interacción con la base de datos y la experiencia del usuario.
+    \item Realizar un motor de busqueda simplificado que interprete las peticiones del usuario y las traduzca a consultas SQL.
+      %Aqui deberia ir la reproducción del audio
+    \end{itemize}
+
+\subsubsection*{Presentación de Componentes}
+
+Para cumplir con los requerimientos de la interfaz grafica, el sistema se estructuró bajo el patrón de diseño \textbf{Modelo-Vista-Controlador (MVC)}.Esto permite relaizar la siguiente división 
+\begin{itemize}
+    \item \pb{Modelo:} Encargado de la parte funcional del proyecto, se encarga de la gestión de la base de datos, la lectura de los metadatos mediante el minero y el procesamiento de las busquedas.
+    \item \pb{Vista:} Se refiere a la interfaz gráfica. Su función es presentar la información de manera visual y capturar las interacciones y modificaciones del usuario.
+    \item \pb{Contolador:} Comunicación entre el Modelo y la Vista, gestiona el flujo de información, transformando las acciones del usuario en operaciones dentro del modelo y actualizando la vista.
+\end{itemize}
+
+
+\section*{Analisis y Diseño (Modelo)}
+
+En esta seción desglosaremos como se hizo el analisis y diseño del proyecto, estableciendo los requerimientos y estructura:
+
+\subsection*{Análisis}
+
+El proyecto consiste en el desarrollo de una base de datos musical con interfaz grafica, lo que hace obligatorio el uso del Patron de diseño \textbf{Modelo-Vista-Controlador (MVC)}, el cual divide las responsabilidades en componentes independientes .
+
+El sistema debe cumplir con las siguientes funciones clave:
+
+\begin{itemize}
+    \item Recorrer los directorios del sistema de archivos de manera recursiva para localizar y extraer los metadatos de los archivos MP3.
+    \item Desplegar una interfaz grafica intuitiva para mostrar de forma clara la información almacenada.
+    \item Almacenar, modificar y administrar la información de las canciones sin modificar los archivos originales.
+    \item Realizar un motor de busqueda simplificado que reciba e interprete las peticiones del cliente mediante la interfaz, traduciendolas a SQL.
+    \item Recibir, procesar y ejecutar las acciones solicitadas por el cliente y reflejandolas en tiempo real a través de la interfaz.
+    \item Gestionar de forma limpia los posibles errores para asegurar la continuidad del programa.
+\end{itemize}
+
+A partir de estas responsabilidades, se establece que el minero debe recorrer todos los directorios y extraer la información de los archivos validos. En caso de que el sistema encuentre un archivo inválido, inaccesible o corrupto, esté sera ignorado automáticamente, continuando con la mineria sin que esto afecte el comportamiento ni la estabilidad del sistema.
+
+El sistema debe mantenerse funcionando hasta que el cliente decida terminar la ejecución de forma explícita. Si el cliente cierra el programa para despues iniciarlo posteriormente es importante que los datos modificados sobre artistas, álbumes o canciones se mantengan en el archivo SQLite siempre y cuando el usuario lo haya guadado. 
+
+Es un requisito fundamental que el sistema sea tolerante a fallos, lo que significa que, independientemente de las solicitudes del cliente, o los errores puntuales de lectura, el sistema debe continuar operando y permitir la administración de múltiples canciones sin riesgo de pérdida de información.
+
+\subsection*{Diseño}
+
+La elección de el lenguaje \textbf{C\#} para el desarrollo del proyecto se debe a su capacidad para el diseño e implementación de interfaces graficas, ofreciend un ecosistema nativo para la manipulación de bases de datos relacionales. Ademas provee un soporte óptimo para SQLite a través de controladores nativos, esto permite gestionar la base de datos sin necesidad de configurar servidores externos, facilitando el cumplimiento de los objetivos del proyecto analizados previamente.
+
+A continuación, se detalla la comunicación e interacción entre el Modelo y la Vista mediante el Controlador según lo establecido en la etapa de análisis.
+
+%Es necesario hacer el diagrama y remplazarlo
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Uso.png}
+    \caption{Diagrama del patron Modelo Vista Controlador.}
+    \label{fig:conexion}
+\end{figure}
+
+Como se observa en el diagrama, la interacción es ciclica. Una vez iniciada la aplicacion, el controlador se encarga de gestionar el inicio del sistema, si existe un archivo SQLite se desplegara la interfaz cargando los datos de este. En otro caso, se ejecutara de manera automatica el minero sobre el directorio recibido para poblar la base de datos por primera vez. Posteriormente, el cliente podra realizar cualquier solicitud a través de la interfaz (como cambiarle el nombre a una canción). La petición sera captada por el Controlador, el cual transmite los parametros correspondientes al Modelo. El Modelo se encargara de ejecutar la petición y finalmente, mediante notificaciones, estas modificaciones serán reflejadas en tiempo real la interfaz. Es imporante destacar que el archivo de SQLite sera unicamente modificado cuando el usuario solicite de forma explicita la acción de guardar la base de datos.
+
+El siguiente diagrama ejemplifica el funcionamiento y las estructuras internas del Modelo:
+ %Es necesario modificar todo esto
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{servidor.png}
+    \caption{UML del Modelo.}
+    \label{fig:servidor}
+\end{figure}
+
+Como se observa, el servidor mantiene dos propiedades principales representadas como mapas/diccionarios:
+\begin{itemize}
+    \item \pb{Usuarios:} Almacena el nombre de usuario como clave y una referencia a la estructura \texttt{Cliente} como valor.
+    \item \pb{Salas:} Almacena el nombre de la sala como clave y una referencia a la estructura \texttt{Sala} correspondiente.
+\end{itemize}
+Estas estructuras permiten preservar el registro global de todos los usuarios y salas existentes en el sistema.
+
+Por su parte, la abstracción del \textbf{Cliente} en el servidor se compone de tres propiedades:
+\begin{itemize}
+    \item \pb{Usuario:} Nombre identificador elegido por el cliente.
+    \item \pb{Conexión:} Referencia al socket o identificador del cliente dentro de la red.
+    \item \pb{Estado:} Valor perteneciente a la enumeración de estados permitidos, cuyo valor predeterminado al conectarse es \texttt{ACTIVE}.
+\end{itemize}
+
+Las \textbf{Salas} contienen tres propiedades fundamentales:
+\begin{itemize}
+    \item \pb{Nombre:} Nombre identificador de la sala.
+1    \item \pb{Clientes:} Diccionario que asocia el nombre del usuario (*string*) con su respectiva referencia de \texttt{Cliente}.
+    \item \pb{Invitados:} Diccionario con la misma estructura que el de clientes, utilizado para llevar el control de los usuarios que han sido invitados a la sala.
+\end{itemize}
+
+La estructura genérica de los \textbf{Mensajes} dispone de 10 propiedades que corresponden exactamente a los campos definidos en el protocolo JSON, garantizando una estructura homogénea para la transferencia de datos.
+
+Adicionalmente, se implementaron tres enumeraciones principales (\texttt{TIPO}, \texttt{RESPUESTA} y \texttt{ESTADO}). Esta decisión de diseño permite que, al recibir un mensaje en formato JSON, el sistema pueda validar e identificar de forma limpia si la operación o el contenido es válido.
+
+A continuación, se ejemplifica el funcionamiento interno del cliente:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{cliente.png}
+    \caption{UML del cliente.}
+    \label{fig:cliente}
+\end{figure}
+
+Como se puede observar, el cliente mantiene tres propiedades principales:
+\begin{itemize}
+    \item \pb{Usuario:} Nombre del usuario identificado.
+    \item \pb{Estado:} Estado actual del usuario.
+    \item \pb{Conexión:} Instancia de la conexión por socket con el servidor.
+\end{itemize}
+
+Para la administración del estado local, la abstracción del entorno del cliente conserva:
+\begin{itemize}
+    \item Una referencia al cliente.
+    \item Un diccionario de clientes (clave: \textit{string}, valor: \textit{Estado}).
+    \item Un diccionario de salas (clave: \textit{string}, valor: \textit{Lista de cadenas}).
+    \item Una lista de invitaciones recibidas.
+\end{itemize}
+Lo anterior evita la necesidad de solicitar constantemente la lista completa de usuarios al servidor, permitiendo además acceder localmente a la información de las salas a las que se pertenece o a las que se ha sido invitado.
+
+Al igual que en el servidor, los mensajes en el cliente contienen las propiedades definidas por el protocolo para asegurar el formato de las tramas serializadas. Se incluyen las enumeraciones \texttt{Tipo}, \texttt{Respuesta} y \texttt{Estado} para validar las tramas entrantes y garantizar el correcto armado de los JSON salientes.
+
+\section*{Implementación}
+
+En esta sección se describen las tecnologías específicas, bibliotecas, mecanismos de sincronización y métodos clave que hacen funcional la arquitectura del sistema de chat.
+
+\subsection*{Tecnologías Utilizadas}
+
+\begin{itemize}
+    \item \pb{Servidor (Golang):} Implementado en Go utilizando su librería nativa \texttt{net} para el manejo de conexiones TCP sobre sockets, \texttt{encoding/json} para la serialización y deserialización de mensajes, y el paquete \texttt{sync} para el control de concurrencia.
+    \item \pb{Cliente (C\#):} Desarrollado en C\# (.NET) utilizando \texttt{System.Net.Sockets} para la gestión del socket de red, \texttt{System.Text.Json} para el parseo de estructuras de mensajes y hilos/tareas asíncronas (\texttt{Task.Run}) para no bloquear la consola durante la lectura.
+    \item \pb{Administración del Proyecto (Meson):} Se incorporó el sistema de construcción Meson para definir el flujo de compilación del cliente de C\# a través del archivo \texttt{meson.build}.
+\end{itemize}
+
+\subsection*{Detalles y Métodos Clave del Servidor (Golang)}
+
+El servidor se diseñó para procesar clientes de forma concurrente protegiendo las estructuras globales en memoria (\texttt{Usuarios} y \texttt{Salas}) mediante cerrojos de exclusión mutua (\texttt{sync.RWMutex}).
+
+\begin{itemize}
+    \item \pb{Método Temporal:} Controla la conexión inicial de un cliente antes de que este se identifique. Escucha el socket entrante y valida que el primer mensaje sea un comando \texttt{IDENTIFY}. Si el nombre de usuario ya está registrado en la estructura global o el mensaje es inválido, emite la respuesta de error y cierra el socket inmediatamente, evitando el desperdicio de recursos.
+    \item \pb{Métodos de Gestión de Memoria (AgregarCliente, EliminarCliente, AgregarSala, EliminarSala):} Métodos encargados de la modificación de las estructuras de mapas en el servidor. Dado que en Go no es seguro modificar un mapa mientras se iteran sus elementos desde múltiples \textit{goroutines}, estos métodos encierran las operaciones entre bloques \texttt{Lock()} y \texttt{Unlock()} del cerrojo \texttt{RWMutex}, asegurando modificaciones atómicas.
+    \item \pb{Gestión de Conexiones Activas:} Por cada conexión aceptada en el socket principal, el servidor lanza una nueva \textit{goroutine} que atiende de forma asíncrona la lectura continua de tramas JSON enviadas por dicho cliente.
+\end{itemize}
+
+\subsection*{Detalles y del Cliente (C\#)}
+
+El cliente gestiona la asincronía entre la lectura del teclado por parte del usuario y la recepción de notificaciones de red enviadas por el servidor.
+
+\begin{itemize}
+    \item \pb{Método Temporal:} Maneja la rutina de conexión del cliente. Solicita los datos de red (IP y puerto), establece la conexión socket mediante \texttt{TcpClient} y envía el paquete de identificación \texttt{IDENTIFY}. Al recibir una respuesta exitosa (\texttt{SUCCESS}), inicializa las estructuras locales y solicita automáticamente la lista actualizada de usuarios (\texttt{USERS}).
+    \item \pb{Método EscuchaCliente:} Se ejecuta en el hilo principal de la aplicación. Mantiene un bucle continuo capturando la entrada ingresada por el usuario en la terminal, traduce la orden a su representación JSON equivalente usando el protocolo acordado y la transmite por el socket.
+    \item \pb{Método EscuchaServidor:} Corre en un hilo secundario asíncrono (\texttt{Task.Run}). Permanece a la espera de bytes en el socket, deserializa las tramas JSON entrantes y despliega las notificaciones (\texttt{TEXT\_FROM}, \texttt{NEW\_USER}, \texttt{ROOM\_TEXT\_FROM}, etc.) formateadas en la consola sin interrumpir la escritura activa del usuario.
+\end{itemize}
+
+\section*{Conclusiones}
+
+Conclusiones
+
+\section*{Bibliografía}
+
+\begin{enumerate}
+    \item fuentes
+\end{enumerate}
+
+\end{document}
