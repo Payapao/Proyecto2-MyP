@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
+using System.Text;
 
 public class Entrada{
 
@@ -58,9 +58,36 @@ public class Entrada{
 	    return;
 	}
 
+	//Verifica si el archivo es valido
+	if(a != null){
+	    //si no es un archivo valido
+	    if(!valida(a)){
+		mensaje = "El archivo "+a+" no es valido";
+		h = true;
+	    }
+	}
+    }
+    
+    //Metodo para validar archivos
+    private bool valida(string s){
+	try{
+	    byte[] encabezado = new byte[16];
+	    //Se abre el archivo y lee los primeros 16 bytes
+	    using(var file = new FileStream(a, FileMode.Open, FileAccess.Read)){
+		file.Read(encabezado, 0, 16);
+	    }
+	    //Se decodifica
+	    string cabeza = Encoding.UTF8.GetString(encabezado);
+	    //Comprueba si es igual al formato de inicio de un archivo sqlite
+	    return cabeza == "SQLite format 3\0";
+	}catch(Exception){
+	    return false;
+	}
+	
     }
 
-     public static void uso(){
+   //Regresa el error junto a el mensaje de ayuda
+    public static void uso(){
 	if(mensaje != null)
 	    Console.WriteLine(mensaje);
 	Console.WriteLine("Uso de las banderas\n"  +

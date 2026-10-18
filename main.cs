@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 //using Microsoft.Data.Sqlite;
 
 class Proyecto2 {
@@ -12,13 +13,14 @@ class Proyecto2 {
 	
 	string ruta = entrada.ruta();
 	string archivo = entrada.archivo();
-
-	Console.Write(ruta);
-	Console.Write(archivo);
 	
-	//if(archivo == null){
-	//Inicia mineria
-	//}
+	if(archivo == null){
+	    Minero minero = new Minero();
+	    minero.mina(ruta);
+	    HashSet<string> archivos = minero.Archivos;
+	    foreach(string s in archivos)
+		Console.WriteLine(s);
+	}
 	//else{
 	//  try{
 	//	using var conxion = new SqliteConnection("Data Source" + archivo);
