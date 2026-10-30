@@ -4,10 +4,10 @@ using System.Text;
 
 public class Entrada{
 
-    private string a = null;
-    private string r = null;
+    private string a = "";
+    private string r = "";
     private bool h = false;
-    private static string mensaje = null;
+    private static string mensaje = "";
     
     
     public Entrada(string[] args){
@@ -52,14 +52,14 @@ public class Entrada{
 	    }
 	}
 	
-	if(r == null){
+	if(r == ""){
 	    mensaje = "Es necesario ingresar una ruta";
 	    h = true;
 	    return;
 	}
 
 	//Verifica si el archivo es valido
-	if(a != null){
+	if(a != ""){
 	    //si no es un archivo valido
 	    if(!valida(a)){
 		mensaje = "El archivo "+a+" no es valido";

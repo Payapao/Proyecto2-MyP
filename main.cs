@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
 //using Microsoft.Data.Sqlite;
+using Slint;
+using vista;
+
 
 class Proyecto2 {
     
     static void Main(string[] args){
+
+	Environment.SetEnvironmentVariable("SLINT_BACKEND", "software");
 	
 	Entrada entrada = new Entrada(args);
 	if(entrada.help()){
@@ -13,11 +18,12 @@ class Proyecto2 {
 	
 	string ruta = entrada.ruta();
 	string archivo = entrada.archivo();
-	
+
+	HashSet<string> archivos = new HashSet<string>();
 	if(archivo == null){
 	    Minero minero = new Minero();
 	    minero.mina(ruta);
-	    HashSet<string> archivos = minero.Archivos;
+	    archivos = minero.Archivos;
 	    foreach(string s in archivos)
 		Console.WriteLine(s);
 	}
@@ -29,5 +35,8 @@ class Proyecto2 {
 	//}
 
 	//Inicia la interfaz
+	var ventana = new Window();
+
+	ventana.Run();
     }
 }

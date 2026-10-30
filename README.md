@@ -8,7 +8,7 @@ Para compilar y ejecutar el proyecto se requiere contar con las siguientes herra
 
 * SDK de .NET (C# 10+) y el sistema de construcción **Meson** (junto con **Ninja**).
 
-##Instrucciones de Compilación y Ejecución
+## Instrucciones de Compilación y Ejecución
 
 Navega a la carpeta correspondiente e utiliza Meson para compilar el proyecto:
 
