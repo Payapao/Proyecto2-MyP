@@ -8,8 +8,6 @@ using vista;
 class Proyecto2 {
     
     static void Main(string[] args){
-
-	Environment.SetEnvironmentVariable("SLINT_BACKEND", "software");
 	
 	Entrada entrada = new Entrada(args);
 	if(entrada.help()){
