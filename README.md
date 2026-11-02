@@ -12,6 +12,4 @@ Para compilar y ejecutar el proyecto se requiere contar con las siguientes herra
 
 Navega a la carpeta correspondiente e utiliza Meson para compilar el proyecto:
 
-     meson setup build	
-     meson compile -C build
-    ./build/proyecto2.exe -r ruta/del/directorio -a archivo.db (La bandera -a es opcional)
+     dotnet run -- -r ruta/del/directorio -a archivo.db (La bandera -a es opcional)

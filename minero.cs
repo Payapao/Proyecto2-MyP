@@ -23,29 +23,37 @@ class Minero{
 	string[] rutas = Directory.GetFiles(ruta, "*.mp3", SearchOption.AllDirectories);
 
 	foreach(string s in rutas){
-	    if(!archivos.Contains(s)){
-		string identificador = extraerInformacion(s);
+	    string identificador = extraerInformacion(s);
+	    if(!archivos.Contains(identificador) && identificador != "")
 		archivos.Add(identificador);
-	    }
 	}
     }
 
     private string extraerInformacion(string s){
 	try{
-
+	    Console.WriteLine(s);
 	    using (var archivo = TagLib.File.Create(s)){
 		
 		string[] artista = archivo.Tag.Performers;
+		Console.WriteLine("Artista: "+artista);
 		string titulo = archivo.Tag.Title;
+		Console.WriteLine("Titulo: "+titulo);
 		string album = archivo.Tag.Album;
+		Console.WriteLine("Album: "+album);
 		string[] artista_album = archivo.Tag.AlbumArtists;
+		Console.WriteLine("Artista del album: "+artista_album);
 		uint año = archivo.Tag.Year;
+		Console.WriteLine("Año: "+año);
 		uint pista = archivo.Tag.Track;
+		Console.WriteLine("Pista: "+pista);
 		uint disco = archivo.Tag.Disc;
+		Console.WriteLine("Disco: "+disco);
 		string[] genero = archivo.Tag.Genres;
+		Console.WriteLine("Genero: "+genero);
 		string comentario = archivo.Tag.Comment;
+		Console.WriteLine("Comentario: "+comentario);
 
-		return titulo;
+		return s;
 	    }
 	}catch(Exception){
 	    Console.WriteLine("No fue posible leer el archivo "+s+", ha sido ignorado");

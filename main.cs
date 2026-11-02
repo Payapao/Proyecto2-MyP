@@ -13,18 +13,20 @@ class Proyecto2 {
 	if(entrada.help()){
 	    Entrada.uso();
 	}
-	
+
 	string ruta = entrada.ruta();
 	string archivo = entrada.archivo();
-
 	HashSet<string> archivos = new HashSet<string>();
-	if(archivo == null){
+	if(archivo == ""){
 	    Minero minero = new Minero();
 	    minero.mina(ruta);
 	    archivos = minero.Archivos;
-	    foreach(string s in archivos)
+	    foreach(string s in archivos){
 		Console.WriteLine(s);
+	    	Console.Out.Flush();
+	    }
 	}
+
 	//else{
 	//  try{
 	//	using var conxion = new SqliteConnection("Data Source" + archivo);
@@ -33,8 +35,8 @@ class Proyecto2 {
 	//}
 
 	//Inicia la interfaz
-	var ventana = new Window();
+	//	var ventana = new Window();
 
-	ventana.Run();
+	//ventana.Run();
     }
 }
