@@ -34,25 +34,27 @@ class Minero{
 	    Console.WriteLine(s);
 	    using (var archivo = TagLib.File.Create(s)){
 		
-		string[] artista = archivo.Tag.Performers;
-		Console.WriteLine("Artista: "+artista);
+		string[] artistas = archivo.Tag.Performers;
+		Console.WriteLine("Artista: " + string.Join(", ", artistas));
 		string titulo = archivo.Tag.Title;
 		Console.WriteLine("Titulo: "+titulo);
 		string album = archivo.Tag.Album;
 		Console.WriteLine("Album: "+album);
-		string[] artista_album = archivo.Tag.AlbumArtists;
-		Console.WriteLine("Artista del album: "+artista_album);
 		uint año = archivo.Tag.Year;
 		Console.WriteLine("Año: "+año);
 		uint pista = archivo.Tag.Track;
-		Console.WriteLine("Pista: "+pista);
+		uint totalPistas = archivo.Tag.TrackCount;
+		Console.WriteLine("Pista: "+pista+ " of "+ totalPistas);
 		uint disco = archivo.Tag.Disc;
 		Console.WriteLine("Disco: "+disco);
 		string[] genero = archivo.Tag.Genres;
-		Console.WriteLine("Genero: "+genero);
+		Console.WriteLine("Genero: " + string.Join(", ", genero));
 		string comentario = archivo.Tag.Comment;
 		Console.WriteLine("Comentario: "+comentario);
-
+		string[] compositor = archivo.Tag.Composers;
+		Console.WriteLine("Compositores: " + string.Join(", ", compositor));
+		
+		
 		return s;
 	    }
 	}catch(Exception){
