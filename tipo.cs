@@ -8,7 +8,7 @@ class Types{
 	set{id_type = value;}
     }
 
-    public string descripcion{
+    public string Descripcion{
 	get{return descripcion;}
 	set{descripcion = value;}
     }
