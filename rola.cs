@@ -1,4 +1,6 @@
-class Rola{
+namespace proyecto2.Models;
+
+public class Rola{
 
     private int id_rolas = -1;
     private int id_performer = -1;

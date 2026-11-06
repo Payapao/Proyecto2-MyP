@@ -1,4 +1,6 @@
-class In_group{
+namespace proyecto2.Models;
+
+public class In_group{
 
     private int id_person= -1;
     private int id_group = -1;

@@ -1,4 +1,6 @@
-class Types{
+namespace proyecto2.Models;
+
+public class Types{
 
     private int id_type = -1;
     private string descripcion = "";
@@ -8,7 +10,7 @@ class Types{
 	set{id_type = value;}
     }
 
-    public string Descripcion{
+    public string Description{
 	get{return descripcion;}
 	set{descripcion = value;}
     }

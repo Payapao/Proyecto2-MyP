@@ -1,4 +1,6 @@
-class Groups{
+namespace proyecto2.Models;
+
+public class Group{
 
     private int id_group = -1;
     private string name = "";

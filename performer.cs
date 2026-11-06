@@ -1,7 +1,9 @@
-class Performers{
+namespace proyecto2.Models;
 
-    private int id_performer = -1;
-    private int id_type = -1;
+public class Performer{
+
+    private int id_performer = 0;
+    private int id_type = 2;
     private string name = "";
 
     public int Id_performer{

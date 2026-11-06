@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-//using Microsoft.Data.Sqlite;
 using Slint;
 using vista;
-
+using proyecto2.Services;
+using proyecto2.Data;
 
 class Proyecto2 {
     
@@ -17,14 +17,16 @@ class Proyecto2 {
 	string ruta = entrada.ruta();
 	string archivo = entrada.archivo();
 	HashSet<string> archivos = new HashSet<string>();
+	//Si el archivo no existe
 	if(archivo == ""){
-	    Minero minero = new Minero();
-	    minero.mina(ruta);
-	    archivos = minero.Archivos;
-	    foreach(string s in archivos){
-		Console.WriteLine(s);
-	    	Console.Out.Flush();
+	    using ( var bd = new BaseDeDatos()){
+		bd.Database.EnsureCreated();
+		
+		Minero minero = new Minero(bd);
+		minero.mina(ruta);
+		archivos = minero.Archivos;
 	    }
+	    
 	}
 
 	//else{

@@ -1,4 +1,6 @@
-class Persons{
+namespace proyecto2.Models;
+
+public class Person{
 
     private int id_person = -1;
     private string stage_name = "";

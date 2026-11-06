@@ -1,4 +1,6 @@
-class Album{
+namespace proyecto2.Models;
+
+public class Album{
 
     private int id_album = -1;
     private string path = "";
