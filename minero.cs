@@ -43,7 +43,7 @@ namespace proyecto2.Services{
 		
 		    string artista = archivo.Tag.FirstPerformer;
 		    if(string.IsNullOrEmpty(artista))
-			artista = "Desconocido";
+			artista = "Unknow";
 		
 		    string titulo = archivo.Tag.Title;
 		    if(string.IsNullOrEmpty(titulo))
@@ -51,7 +51,7 @@ namespace proyecto2.Services{
 
 		    string album = archivo.Tag.Album;
 		    if(string.IsNullOrEmpty(album))
-			album = "Desconocido";
+			album = "Unknow";
 
 		    int año = (int)archivo.Tag.Year;
 
@@ -62,7 +62,7 @@ namespace proyecto2.Services{
 
 		    string genero = archivo.Tag.FirstGenre;
 		    if(string.IsNullOrEmpty(genero))
-			genero = "Desconocido";
+			genero = "Unkown";
 
 		    //Estos probablemente no sean necesarios
 		    string comentario = archivo.Tag.Comment;
@@ -82,7 +82,9 @@ namespace proyecto2.Services{
 
 		    var albums = bd.Albums.FirstOrDefault(i => i.Name == album);
 		    if(albums == null){
+			int acc = bd.Albums.Any() ? bd.Albums.Max(i => i.Id_album)+1 : 1;
 			albums = new Album{
+			    Id_album = acc,
 			    Name = album,
 			    Path = Path.GetDirectoryName(s) ?? "",
 			    Year = año
@@ -91,7 +93,9 @@ namespace proyecto2.Services{
 			bd.SaveChanges();
 		    }
 
+		    int max = bd.Rolas.Any() ? bd.Rolas.Max(i => i.Id_rolas)+1 : 1;
 		    var rola = new Rola{
+			Id_rolas = max,
 			Id_performer = performer.Id_performer,
 			Id_album = albums.Id_album,
 			Path = s,
@@ -100,11 +104,13 @@ namespace proyecto2.Services{
 			Year = año,
 			Genre = genero
 		    };
+		    bd.Rolas.Add(rola);
+		    bd.SaveChanges();
 		
 		    return s;
 		}
 	    }catch(Exception e){
-		Console.WriteLine(e.Message);
+		Console.WriteLine(e.InnerException?.Message);
 		Console.WriteLine("No fue posible leer el archivo "+s+", ha sido ignorado");
 
 		return "";

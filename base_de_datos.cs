@@ -32,6 +32,7 @@ public class BaseDeDatos : DbContext{
 
 	Builder.Entity<Rola>().ToTable("rolas").HasKey(i => i.Id_rolas);
 
+	Builder.Entity<Rola>().Property(i => i.Id_rolas).ValueGeneratedNever();
 	//Datos predeterminados
 	Builder.Entity<Types>(entity => {
 	    entity.HasKey(i => i.Id_type);
@@ -39,15 +40,18 @@ public class BaseDeDatos : DbContext{
 	    entity.HasData(
 	    new Types {Id_type = 0, Description = "Person"},
 	    new Types {Id_type = 1, Description = "Group"},
-	    new Types {Id_type = 2, Description = "Unknown"}
-	);
+	    new Types {Id_type = 2, Description = "Unknown"});
 	});
 
-	Builder.Entity<Album>().HasData( new Album{
-		Id_album = -1,
-		Path = "",
-		Name = "Unknown",
-		Year = 0
-	    });
+	Builder.Entity<Album>(entity => {
+	    entity.HasKey(i => i.Id_album);
+	    entity.Property(i => i.Id_album).ValueGeneratedNever();
+	    entity.HasData(
+		new Album{
+		          Id_album = 0,
+			  Path = "",
+			  Name = "Unknown",
+			  Year = 0 });
+	});
     }
 }
