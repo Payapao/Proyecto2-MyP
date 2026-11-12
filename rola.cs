@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace proyecto2.Models;
 
 public class Rola{
@@ -11,7 +14,11 @@ public class Rola{
     private int year = -1;
     private string genre = "";
 
-    public int Id_rolas{
+    private Performer? performer;
+    private Album? album;
+
+    [Key]
+     public int Id_rolas{
 	get{return id_rolas;}
 	set{id_rolas = value;}
     }
@@ -50,4 +57,17 @@ public class Rola{
 	get{return genre;}
 	set{genre = value;}
     }
+
+    [ForeignKey("Id_performer")]
+    public Performer? Performer{
+	get{return performer;}
+	set{performer = value;}
+    }
+    
+    [ForeignKey("Id_album")]
+    public Album? Album{
+	get{return album;}
+	set{album = value;}
+    }
 }
+
