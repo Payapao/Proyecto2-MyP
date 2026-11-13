@@ -3,57 +3,66 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace proyecto2.Models;
 
+[Table("rolas")]
 public class Rola{
 
-    private int id_rolas = -1;
+    private int id_rola = -1;
     private int id_performer = -1;
     private int id_album = -1;
-    private string path = "";
-    private string title = "";
-    private int track = -1;
-    private int year = -1;
-    private string genre = "";
+    private string? path = "";
+    private string? title = "";
+    private int? track = -1;
+    private int? year = -1;
+    private string? genre = "";
 
     private Performer? performer;
     private Album? album;
 
     [Key]
-     public int Id_rolas{
-	get{return id_rolas;}
-	set{id_rolas = value;}
+    [Column("id_rola")]
+     public int Id_rola{
+	get{return id_rola;}
+	set{id_rola = value;}
     }
-    
+
+    [Column("id_performer")]
     public int Id_performer{
 	get{return id_performer;}
 	set{id_performer = value;}
     }
-    
+
+    [Column("id_album")]
     public int Id_album{
 	get{return id_album;}
 	set{id_album = value;}
     }
-    
-    public string Path{
+
+    [Column("path")]
+    public string? Path{
 	get{return path;}
 	set{path = value;}
     }
 
-    public string Title{
+    [Column("title")]    
+    public string? Title{
 	get{return title;}
 	set{title = value;}
     }
 
-    public int Track{
+    [Column("track")]    
+    public int? Track{
 	get{return track;}
 	set{track =  value;}
     }
-    
-    public int Year{
+
+    [Column("year")]
+    public int? Year{
 	get{return year;}
 	set{year = value;}
     }
-    
-    public string Genre{
+
+    [Column("genre")]    
+    public string? Genre{
 	get{return genre;}
 	set{genre = value;}
     }

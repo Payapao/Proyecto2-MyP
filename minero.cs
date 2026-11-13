@@ -9,18 +9,10 @@ namespace proyecto2.Services{
     
     public class Minero{
 	
-	private HashSet<string> archivos;
 	private BaseDeDatos bd;
-	
-	//Getter y setter
-	public HashSet<string> Archivos{
-	    get{return archivos;}
-	    set{archivos = value;}
-	}
 	
 	//Constructor del minero
 	public Minero(BaseDeDatos b){
-	    archivos = new HashSet<string>();
 	    bd = b;
 	}
 	
@@ -30,13 +22,13 @@ namespace proyecto2.Services{
 	    string[] rutas = Directory.GetFiles(ruta, "*.mp3", SearchOption.AllDirectories);
 	    
 	    foreach(string s in rutas){
-		string identificador = extraerInformacion(s);
-		if(!archivos.Contains(identificador) && identificador != "")
-		    archivos.Add(identificador);
+		bool existe = bd.Rolas.Any(p => p.Path == s);
+		if(!existe)
+		    extraerInformacion(s);
 	    }
 	}
 	
-	private string extraerInformacion(string s){
+	private void extraerInformacion(string s){
 	    try{
 		Console.WriteLine(s);
 		using (var archivo = TagLib.File.Create(s)){
@@ -93,9 +85,9 @@ namespace proyecto2.Services{
 			bd.SaveChanges();
 		    }
 
-		    int max = bd.Rolas.Any() ? bd.Rolas.Max(i => i.Id_rolas)+1 : 1;
+		    int max = bd.Rolas.Any() ? bd.Rolas.Max(i => i.Id_rola)+1 : 1;
 		    var rola = new Rola{
-			Id_rolas = max,
+			Id_rola = max,
 			Id_performer = performer.Id_performer,
 			Id_album = albums.Id_album,
 			Path = s,
@@ -107,13 +99,11 @@ namespace proyecto2.Services{
 		    bd.Rolas.Add(rola);
 		    bd.SaveChanges();
 		
-		    return s;
 		}
 	    }catch(Exception e){
 		Console.WriteLine(e.InnerException?.Message);
 		Console.WriteLine("No fue posible leer el archivo "+s+", ha sido ignorado");
 
-		return "";
 	    }
 	}
     }

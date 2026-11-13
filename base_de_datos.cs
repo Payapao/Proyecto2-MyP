@@ -5,6 +5,8 @@ namespace proyecto2.Data;
 
 public class BaseDeDatos : DbContext{
 
+    private string ruta;
+    
     public DbSet<Types> Types {get; set;}
     public DbSet<Performer> Performers {get; set;}
     public DbSet<Person> Persons {get; set;}
@@ -13,8 +15,12 @@ public class BaseDeDatos : DbContext{
     public DbSet<Album> Albums {get; set;}
     public DbSet<Rola> Rolas {get; set;}
 
+    public BaseDeDatos(string r){
+	ruta  = r;
+    }
+    
     protected override void OnConfiguring(DbContextOptionsBuilder Builder){
-	Builder.UseSqlite("Data Source=base_de_datos.db");
+	Builder.UseSqlite($"Data Source={ruta}");
     }
 
     protected override void OnModelCreating(ModelBuilder Builder){
@@ -30,9 +36,9 @@ public class BaseDeDatos : DbContext{
 	
 	Builder.Entity<Album>().ToTable("albums").HasKey(i => i.Id_album);
 
-	Builder.Entity<Rola>().ToTable("rolas").HasKey(i => i.Id_rolas);
+	Builder.Entity<Rola>().ToTable("rolas").HasKey(i => i.Id_rola);
 
-	Builder.Entity<Rola>().Property(i => i.Id_rolas).ValueGeneratedNever();
+	Builder.Entity<Rola>().Property(i => i.Id_rola).ValueGeneratedNever();
 	//Datos predeterminados
 	Builder.Entity<Types>(entity => {
 	    entity.HasKey(i => i.Id_type);
