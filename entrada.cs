@@ -59,12 +59,14 @@ public class Entrada{
 	}
 
 	//Verifica si el archivo es valido
-	if(a != "")
+	if(a != ""){
 	    //si no es un archivo valido
 	    if(!valida(a)){
 		mensaje = "El archivo "+a+" no es valido";
 			h = true;
 	    }
+	}else
+	    a = "base_de_datos.db";
 	
     }
     

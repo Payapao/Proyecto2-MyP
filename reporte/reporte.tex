@@ -1,3 +1,4 @@
+
 \documentclass[12pt]{article}
 
 \usepackage[margin=1in]{geometry}
@@ -282,8 +283,9 @@ La estructura genérica de los \textbf{Mensajes} dispone de 10 propiedades que c
 
 Adicionalmente, se implementaron tres enumeraciones principales (\texttt{TIPO}, \texttt{RESPUESTA} y \texttt{ESTADO}). Esta decisión de diseño permite que, al recibir un mensaje en formato JSON, el sistema pueda validar e identificar de forma limpia si la operación o el contenido es válido.
 
-A continuación, se ejemplifica el funcionamiento interno del cliente:
+A continuación, se ejemplifica el funcionamiento interno de la vista:
 
+%Diagrama de la vista
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{cliente.png}
@@ -343,7 +345,7 @@ El cliente gestiona la asincronía entre la lectura del teclado por parte del us
 
 \section*{Conclusiones}
 
-Conclusiones
+En este proyecto logre aprender varias cosas hacerca de las bases de datos y sqlite, fue un reto significativo debido a que nunca antes habia implementado el Modelo Vista Controlador. Una de las mayores complicaciones fue la interfaz grafica debido a que nunca antes habia implementado ni diseñado una.
 
 \section*{Bibliografía}
 
@@ -354,7 +356,7 @@ Conclusiones
 \item https://id3.org/id3v2.4.0-structure
 \item https://github.com/slint-ui/slint/tree/master
 \item https://learn.microsoft.com/es-es/dotnet/api/system.data.entity.dbcontext?view=entity-framework-6.2.0
-
+\item https://github.com/AarhamH/PalmPlayer
 \end{enumerate}
 
 \end{document}

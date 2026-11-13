@@ -60,6 +60,10 @@ namespace proyecto2.Services{
 		    string comentario = archivo.Tag.Comment;
 		    string[] compositor = archivo.Tag.Composers;
 
+		    //Duracion de la cancion
+		    TimeSpan duracion = archivo.Properties.Duration;
+		    int segundos = (int)Math.Round(duracion.TotalSeconds);
+		    
 		    //Aqui deberia leer las imagenes
 
 		    var performer = bd.Performers.FirstOrDefault(i => i.Name == artista);
@@ -94,7 +98,8 @@ namespace proyecto2.Services{
 			Title = titulo,
 			Track = pista,
 			Year = año,
-			Genre = genero
+			Genre = genero,
+			Duracion = segundos
 		    };
 		    bd.Rolas.Add(rola);
 		    bd.SaveChanges();

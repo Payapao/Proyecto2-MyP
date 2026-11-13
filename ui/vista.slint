@@ -1,14 +1,678 @@
-export component MainWindow inherits Window {
-    width: 500px;
-    height: 400px;
-    title: "Mi Proyecto 2 - Minero";
+import { LineEdit, Slider, ScrollView } from "std-widgets.slint";
+
+//Componentes perzonalizados
+component BotonPlano inherits Rectangle {
+
+    in property <string> texto: "";
+    in property <string> subtexto: "";
+    in property <bool> seleccionado: false;
+
+    callback clicked();
+
+    height: 35px;
+    background: #292929;
+    border-radius: 5px;
+
+    VerticalLayout{
+	alignment: center;
+	spacing: 2px;
+	
+	Text {
+            text: root.texto;
+            color: white;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+            font-size: 14px;
+	}
+
+	if root.subtexto != "" : Text{
+	    text: root.subtexto;
+            color: #aaaaaa;
+            horizontal-alignment: center;
+            font-size: 11px;
+	}
+    }
+
+    TouchArea {
+        clicked => {
+            root.clicked();
+        }
+    }
+}
+
+component BarraProgreso inherits Rectangle {
+    in-out property <float> value: 0;
+
+    height: 40px;
+    horizontal-stretch: 1;
+    min-width: 0px;
+    background: transparent;
+
+    Rectangle {
+        x: 9px;
+        y: (parent.height - 6px) / 2;
+        width: max(0px, parent.width - 18px);
+        height: 6px;
+        border-radius: 3px;
+        background: #555555;
+    }
+
+    Rectangle {
+        x: 9px;
+        y: (parent.height - 6px) / 2;
+        width: max(0px, (parent.width - 18px) * root.value / 100);
+        height: 6px;
+        border-radius: 3px;
+        background: #a56a9c;
+    }
+
+    Rectangle {
+        width: 18px;
+        height: 18px;
+        y: (parent.height - self.height) / 2;
+        x: max(0px, min(parent.width - self.width,
+		9px + (parent.width - 18px) * root.value / 100 - self.width / 2));
+        border-radius: 9px;
+        background: white;
+    }
+
+    TouchArea {
+        width: parent.width;
+        height: parent.height;
+
+        clicked => {
+            root.value = max(0, min(100,
+                    (self.mouse-x - 9px) / (root.width - 18px) * 100));
+        }
+
+        moved => {
+            if (self.pressed) {
+                root.value = max(0, min(100,
+			(self.mouse-x - 9px) / (root.width - 18px) * 100));
+            }
+        }
+    }
+}
+
+//Ventana
+export component Window inherits Window {
+    
+    width: 1100px;
+    height: 700px;
+
+    title: "Base de datos musical";
     background: #1a1a1a;
 
-    Text {
-        text: "¡Minero y Slint UI funcionando!";
-        color: #4CAF50;
-        font-size: 24px;
-        horizontal-alignment: center;
-        vertical-alignment: center;
+    //Album
+    in-out property <[string]> albums: [];
+    in-out property <string> album_seleccionado: "Payapao's bd";
+    in-out property <string> indice_album_seleccionado: "0";
+    in-out property <[string]> albums_year: [];
+    callback selecciona-album();
+
+    //Cancion
+    in-out property <string> cancion_seleccionada: "Nombre de la canción";
+    in-out property <[string]> rolas_rutas: [];
+    in-out property <string> ruta_cancion: "/ruta/de/la/cancion.mp3";
+    in-out property <[string]> rolas_duracion: [];
+    in-out property <int> duracion_segundos: 0;
+    out property <int> segundos_actuales:
+    (root.progreso * root.duracion_segundos / 100);
+    callback selecciona-cancion();
+    
+    //Canciones del album
+    in-out property <bool> buscar_cancion: false;
+    in-out property <string> texto_cancion: "";
+    in-out property <[string]> lista_canciones: [];
+    in-out property <[string]> rolas_nombres: [];
+    in-out property <[string]> rolas_performers: [];
+    callback busca-cancion(string);
+
+    //Busqueda por performer
+    in-out property <bool> buscar_performer: false;
+    in-out property <string> texto_performer: "";
+    in-out property <[string]> lista_performers: [];
+    callback busca-performer(string);
+
+    //Volumen y progreso
+    in-out property <bool> mostrar_volumen: false;
+    in-out property <float> volumen: 50;
+    in-out property <float> progreso: 0;
+
+    //Performers
+    in-out property <[string]> rolas_performers_ids: [];
+    in-out property <string> perf_edit_id: 0;
+    in-out property <int> perf_edit_tipo: 2;
+    in-out property <string> perf_edit_nombre: "";
+    //Persona
+    in-out property <string> perf_edit_real_name: "";
+    in-out property <string> perf_edit_birth_date: "";
+    in-out property <string> perf_edit_death_date: "";
+    //Grupo
+    in-out property <string> perf_edit_start_date: "";
+    in-out property <string> perf_edit_end_date: "";
+    callback cargar-performer();
+    callback definir-tipo-performer();
+    callback guardar-performer();
+
+    callback agregar-personas();
+    callback volver-a-minar();
+
+    VerticalLayout {
+
+	width: 100%;
+	height: 100%;
+        spacing: 0px;
+
+        HorizontalLayout {
+
+	    vertical-stretch: 1;
+	    min-height: 0px;
+            spacing: 0px;
+
+
+	    //Panel izquierdo
+            Rectangle {
+
+                width: 220px;
+                background: #111111;
+
+                VerticalLayout {
+
+                    padding: 12px;
+                    spacing: 12px;
+
+                    HorizontalLayout {
+
+                        spacing: 5px;
+
+                        BotonPlano {
+                            texto: "+ Personas";
+                            horizontal-stretch: 1;
+
+                            clicked => {
+                                root.agregar-personas();
+                            }
+                        }
+
+                        BotonPlano {
+                            texto: "Minar";
+                            horizontal-stretch: 1;
+
+                            clicked => {
+                                root.volver-a-minar();
+                            }
+                        }
+                    }
+
+		    //Albums
+                    Text {
+                        text: "Albums";
+                        color: white;
+                        font-size: 22px;
+                        font-weight: 700;
+                    }
+
+                    Rectangle {
+                        height: 1px;
+                        background: #444444;
+                    }
+
+		    //Se crea un boton por cada album
+		    for album[index] in root.albums: BotonPlano {
+			height: 65px;
+			texto: album;
+			subtexto: root.albums_year[index];
+
+			clicked => {
+			    root.album_seleccionado = album;
+			    root.indice_album_seleccionado = "" + index;
+			    root.selecciona-album();
+			}
+		    }
+		    
+                }
+            }
+
+	    //Panel derecho
+            VerticalLayout {
+
+                spacing: 0px;
+		vertical-stretch: 1;
+
+		//Encabezado
+
+                Rectangle {
+
+                    height: 130px;
+                    background: #202020;
+
+                    VerticalLayout {
+
+                        padding: 20px;
+                        alignment: center;
+
+                        Text {
+                            text: root.album_seleccionado;
+                            color: white;
+                            font-size: 28px;
+                            font-weight: 700;
+                        }
+                    }
+                }
+
+		//Buscar
+                Rectangle {
+
+                    height: 65px;
+                    background: #292929;
+
+                    HorizontalLayout {
+
+                        alignment: center;
+                        spacing: 10px;
+                        padding: 10px;
+
+
+                        BotonPlano {
+                            texto: "Canciones";
+
+                            clicked => {
+                                root.buscar_cancion =
+                                !root.buscar_cancion;
+
+                                root.buscar_performer = false;
+                            }
+                        }
+
+
+                        BotonPlano {
+                            texto: "Performers";
+
+                            clicked => {
+                                root.buscar_performer =
+                                !root.buscar_performer;
+
+                                root.buscar_cancion = false;
+                            }
+                        }
+
+
+                        if (root.buscar_cancion): LineEdit {
+
+                            placeholder-text: "Buscar canción...";
+                            width: 180px;
+			    
+			    text <=> root.texto_cancion;
+
+			    edited => {
+				root.busca-cancion(root.texto_cancion);
+			    }
+                        }
+
+
+                        if (root.buscar_performer): LineEdit {
+
+                            placeholder-text: "Buscar performer...";
+                            width: 180px;
+
+			    text <=> root.texto_performer;
+
+			    edited => {
+				root.busca-performer(root.texto_performer);
+			    }
+                        }
+                    }
+                }
+
+		//Apartado canciones
+                Rectangle {
+
+                    background: #191919;
+		    vertical-stretch: 1;
+		    min-height: 0px;
+		    clip: true;
+
+                    VerticalLayout {
+
+                        padding: 15px;
+                        spacing: 10px;
+
+			//Nombres
+
+                        HorizontalLayout {
+
+                            height: 35px;
+                            spacing: 10px;
+
+                            Text {
+                                text: "#";
+                                width: 35px;
+                                color: #aaaaaa;
+                                font-size: 14px;
+                            }
+
+                            Text {
+                                text: "Canción";
+                                horizontal-stretch: 1;
+                                color: #aaaaaa;
+                                font-size: 14px;
+                            }
+
+                            Text {
+                                text: "Performer";
+                                width: 180px;
+                                color: #aaaaaa;
+                                font-size: 14px;
+                            }
+                        }
+
+			//Canciones por album
+
+                        ScrollView {
+			    vertical-stretch: 1;
+
+			    VerticalLayout {
+				spacing: 10px;
+
+				for cancion[index] in root.rolas_nombres: BotonPlano {
+				    height: 65px;
+				    background: #252525;
+
+				    clicked => {
+					root.cancion_seleccionada = cancion;
+					root.ruta_cancion = root.rolas_rutas[index];
+					root.duracion_segundos = root.rolas_duracion[index].to-float();
+					root.selecciona-cancion();
+				    }
+				    
+				    HorizontalLayout {
+					padding: 8px;
+					spacing: 10px;
+
+					Rectangle {
+					    width: 45px;
+					    height: 45px;
+					    background: #555555;
+					    border-radius: 4px;
+					}
+
+					Text {
+					    text: root.lista_canciones[index];
+					    width: 25px;
+					    color: #aaaaaa;
+					    vertical-alignment: center;
+					}
+
+					Text {
+					    text: cancion;
+					    horizontal-stretch: 1;
+					    color: white;
+					    vertical-alignment: center;
+					    font-size: 15px;
+					}
+
+					BotonPlano {
+					    texto: root.rolas_performers[index];
+					    width: 180px;
+
+					    clicked => {
+						root.perf_edit_id = root.rolas_performers_ids[index];
+						root.cargar-performer();
+						ventana_performer.show();
+					    }
+					}
+				    }
+				}
+			    }
+			}
+                    }
+                }
+            }
+        }
+	
+	//Reproductor
+	Rectangle {
+	    height: 120px;
+	    background: #222222;
+	    clip: true;
+
+	    HorizontalLayout {
+		padding: 15px;
+		spacing: 15px;
+
+		// Información de la canción
+		VerticalLayout {
+		    width: 230px;
+		    alignment: center;
+		    spacing: 8px;
+
+		    Text {
+			text: cancion_seleccionada;
+			color: white;
+			font-size: 18px;
+			font-weight: 700;
+			vertical-alignment: center;
+			overflow: elide;
+		    }
+
+		    Text {
+			text: ruta_cancion;
+			color: #aaaaaa;
+			font-size: 13px;
+			overflow: elide;
+			vertical-alignment: center;
+		    }
+		}
+
+		// Controles y progreso
+		VerticalLayout {
+		    horizontal-stretch: 1;
+		    min-width: 0px;
+		    alignment: center;
+		    spacing: 8px;
+
+		    // Botones
+		    HorizontalLayout {
+			alignment: center;
+			spacing: 20px;
+			height: 38px;
+
+			BotonPlano {
+			    texto: "⏮";
+			    width: 45px;
+			    height: 35px;
+			}
+
+			BotonPlano {
+			    texto: "⏸";
+			    width: 45px;
+			    height: 35px;
+			}
+
+			BotonPlano {
+			    texto: "⏭";
+			    width: 45px;
+			    height: 35px;
+			}
+		    }
+
+		    // Barra de progreso
+		    HorizontalLayout {
+			horizontal-stretch: 1;
+			spacing: 8px;
+
+			Text {
+			    width: 40px;
+			    color: white;
+			    vertical-alignment: center;
+			    font-size: 13px;
+
+			    text:
+                            (Math.floor(root.segundos_actuales / 60) < 10 ? "0" : "")
+                            + Math.floor(root.segundos_actuales / 60) + ":"
+                            + (Math.mod(root.segundos_actuales, 60) < 10 ? "0" : "")
+                            + Math.mod(root.segundos_actuales, 60);
+			}
+
+			BarraProgreso {
+			    horizontal-stretch: 1;
+			    min-width: 0px;
+			    value <=> root.progreso;
+			}
+
+			Text {
+			    width: 40px;
+			    color: white;
+			    vertical-alignment: center;
+			    font-size: 13px;
+
+			    text:
+                            (Math.floor(root.duracion_segundos / 60) < 10 ? "0" : "")
+                            + Math.floor(root.duracion_segundos / 60) + ":"
+                            + (Math.mod(root.duracion_segundos, 60) < 10 ? "0" : "")
+                            + Math.mod(root.duracion_segundos, 60);
+			}
+		    }
+		}
+	    }
+	}
+    }
+
+    //Edita al performer
+
+    ventana_performer := PopupWindow {
+
+        x: 350px;
+        y: 180px;
+
+        width: 300px;
+	height: root.perf_edit_tipo == 2 ? 190px : 350px;
+
+        Rectangle {
+
+            background: #292929;
+            border-radius: 8px;
+	    border-width: 1px;
+            border-color: #444444;
+
+            VerticalLayout {
+
+                padding: 18px;
+                spacing: 12px;
+
+                Text {
+		    text: root.perf_edit_tipo == 2 ? "Definir tipo de Performer" : 
+                    (root.perf_edit_tipo == 0 ? "Editar Persona" : "Editar Grupo");
+                    color: white;
+                    font-size: 18px;
+                    font-weight: 700;
+                }
+
+		//Si es un tipo desconocido
+		if (root.perf_edit_tipo == 2) : VerticalLayout {
+                    spacing: 12px;
+                    Text {
+                        text: "El artista '" + root.perf_edit_nombre + "' es...";
+                        color: #cccccc;
+                        wrap: word-wrap;
+                        font-size: 13px;
+                    }
+
+                    HorizontalLayout {
+                        spacing: 10px;
+                        BotonPlano {
+                            texto: "Es una Persona";
+                            horizontal-stretch: 1;
+                            clicked => {
+                                root.perf_edit_tipo = 0;
+                                root.definir-tipo-performer();
+                            }
+                        }
+                        BotonPlano {
+                            texto: "Es un Grupo";
+                            horizontal-stretch: 1;
+                            clicked => {
+                                root.perf_edit_tipo = 1;
+                                root.definir-tipo-performer();
+                            }
+                        }
+                    }
+                }
+
+		//Si es una persona
+		if (root.perf_edit_tipo == 0) : VerticalLayout {
+                    spacing: 8px;
+                    LineEdit { placeholder-text: "Nombre artístico"; text <=> root.perf_edit_nombre; }
+                    LineEdit { placeholder-text: "Nombre real"; text <=> root.perf_edit_real_name; }
+                    LineEdit { placeholder-text: "Fecha nacimiento"; text <=> root.perf_edit_birth_date; }
+                    LineEdit { placeholder-text: "Fecha muerte (opcional)"; text <=> root.perf_edit_death_date; }
+                }
+
+		//Si es un grupo
+		if (root.perf_edit_tipo == 1) : VerticalLayout {
+                    spacing: 8px;
+                    LineEdit { placeholder-text: "Nombre del grupo"; text <=> root.perf_edit_nombre; }
+                    LineEdit { placeholder-text: "Fecha de inicio"; text <=> root.perf_edit_start_date; }
+                    LineEdit { placeholder-text: "Fecha de separación (opcional)"; text <=> root.perf_edit_end_date; }
+                }
+
+		//Guardar
+		if (root.perf_edit_tipo != 2) : HorizontalLayout {
+                    spacing: 10px;
+                    BotonPlano {
+                        texto: "Cancelar";
+                        horizontal-stretch: 1;
+                        clicked => { ventana_performer.close(); }
+                    }
+                    BotonPlano {
+                        texto: "Guardar cambios";
+                        horizontal-stretch: 1;
+                        clicked => {
+                            root.guardar-performer();
+                            ventana_performer.close();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    //Volumen
+    ventana_volumen := PopupWindow {
+
+        x: 750px;
+        y: 500px;
+
+        width: 250px;
+        height: 110px;
+
+        Rectangle {
+
+            background: #292929;
+            border-radius: 8px;
+
+            VerticalLayout {
+
+                padding: 15px;
+                spacing: 10px;
+
+
+                Text {
+                    text: "Volumen";
+                    color: white;
+                    font-size: 16px;
+                }
+
+
+                Slider {
+
+                    minimum: 0;
+                    maximum: 100;
+
+                    value <=> root.volumen;
+                }
+            }
+        }
     }
 }

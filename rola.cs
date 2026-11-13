@@ -14,9 +14,16 @@ public class Rola{
     private int? track = -1;
     private int? year = -1;
     private string? genre = "";
+    private int duracion = 0;
 
     private Performer? performer;
     private Album? album;
+
+    [NotMapped] 
+    public int Duracion{
+        get {return duracion;}
+        set {duracion = value;}
+    }
 
     [Key]
     [Column("id_rola")]
